@@ -4,7 +4,14 @@
 
 import { use, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  BookmarkIcon,
+  HeartIcon,
+  MessageCircleIcon,
+  ZapIcon,
+} from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -14,6 +21,12 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 gsap.registerPlugin(useGSAP);
+
+function fmtCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(n >= 10_000 ? 0 : 1)}k`;
+  return String(n);
+}
 
 export default function WorkflowPage({
   params,
@@ -118,6 +131,29 @@ export default function WorkflowPage({
               <p className="mt-2 max-w-lg text-sm text-muted-foreground">
                 {workflow.description}
               </p>
+              {/* Stats row */}
+              <div className="mt-4 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <ZapIcon className="size-3.5" />
+                  {fmtCount(workflow.stats.generations)}
+                  <span className="text-xs">runs</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <HeartIcon className="size-3.5" />
+                  {fmtCount(workflow.stats.likes)}
+                  <span className="text-xs">likes</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <MessageCircleIcon className="size-3.5" />
+                  {fmtCount(workflow.stats.comments)}
+                  <span className="text-xs">comments</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <BookmarkIcon className="size-3.5" />
+                  {fmtCount(workflow.stats.bookmarks)}
+                  <span className="text-xs">saves</span>
+                </span>
+              </div>
             </div>
           </>
         )}

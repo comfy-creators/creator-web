@@ -4,7 +4,13 @@
 
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRightIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  BookmarkIcon,
+  HeartIcon,
+  MessageCircleIcon,
+  ZapIcon,
+} from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -12,8 +18,15 @@ import { useWorkflows, type Workflow } from "@/hooks/use-workflows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP);
+
+function fmtCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(n >= 10_000 ? 0 : 1)}k`;
+  return String(n);
+}
 
 function groupByCategory(workflows: Workflow[]) {
   const groups: Record<string, Workflow[]> = {};
@@ -122,6 +135,25 @@ export default function DiscoverPage() {
               <p className="hero-item mt-2 max-w-md text-sm text-muted-foreground line-clamp-2">
                 {featured.description}
               </p>
+              {/* Stats row */}
+              <div className="hero-item mt-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <ZapIcon className="size-3" />
+                  {fmtCount(featured.stats.generations)} runs
+                </span>
+                <span className="flex items-center gap-1">
+                  <HeartIcon className="size-3" />
+                  {fmtCount(featured.stats.likes)}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MessageCircleIcon className="size-3" />
+                  {fmtCount(featured.stats.comments)}
+                </span>
+                <span className="flex items-center gap-1">
+                  <BookmarkIcon className="size-3" />
+                  {fmtCount(featured.stats.bookmarks)}
+                </span>
+              </div>
               <div className="hero-item mt-6 flex flex-wrap gap-3">
                 <Button
                   size="default"
@@ -172,12 +204,20 @@ export default function DiscoverPage() {
             ))
           : categories.map((category) => (
               <div key={category}>
-                <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                  {category}
-                </h2>
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-base font-semibold">{category}</h2>
+                  <span className="text-xs text-muted-foreground">
+                    {groups[category].length} workflow
+                    {groups[category].length !== 1 ? "s" : ""}
+                  </span>
+                </div>
                 <div className="flex gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {groups[category].map((workflow) => (
-                    <WorkflowCard key={workflow.id} workflow={workflow} />
+                  {groups[category].map((workflow, i) => (
+                    <WorkflowCard
+                      key={workflow.id}
+                      workflow={workflow}
+                      featured={i === 0}
+                    />
                   ))}
                 </div>
               </div>
@@ -187,7 +227,13 @@ export default function DiscoverPage() {
   );
 }
 
-function WorkflowCard({ workflow }: { workflow: Workflow }) {
+function WorkflowCard({
+  workflow,
+  featured = false,
+}: {
+  workflow: Workflow;
+  featured?: boolean;
+}) {
   const router = useRouter();
   const cardRef = useRef<HTMLButtonElement>(null);
 
@@ -252,7 +298,10 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
     <button
       ref={cardRef}
       onClick={() => router.push(`/workflows/${workflow.id}`)}
-      className="group relative aspect-2/3 w-44 shrink-0 cursor-pointer overflow-hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className={cn(
+        "group relative shrink-0 cursor-pointer overflow-hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        featured ? "aspect-2/3 w-56" : "aspect-2/3 w-44",
+      )}
       aria-label={`View ${workflow.name} workflow`}
     >
       {/* Poster image */}
@@ -263,13 +312,43 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Gradient overlay — always visible at bottom */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent" />
+      {/* Deep gradient — heavier bottom fade for readability */}
+      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent" />
 
       {/* Hover shade */}
-      <div className="absolute inset-0 bg-black/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      {/* Info */}
+      {/* Category pill — top-left, always visible */}
+      <div className="absolute left-2.5 top-2.5">
+        <span className="rounded-full border border-white/10 bg-black/50 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-white/70 backdrop-blur-sm">
+          {workflow.category}
+        </span>
+      </div>
+
+      {/* Generations count — top-right, always visible social proof */}
+      <div className="absolute right-2.5 top-2.5">
+        <span className="flex items-center gap-0.5 rounded-full border border-white/10 bg-black/50 px-2 py-0.5 text-[9px] font-medium text-white/70 backdrop-blur-sm">
+          <ZapIcon className="size-2.5" />
+          {fmtCount(workflow.stats.generations)}
+        </span>
+      </div>
+
+      {/* Center "Use →" CTA — appears on hover */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <span className="flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
+          Use
+          <ArrowRightIcon className="size-3" />
+        </span>
+      </div>
+
+      {/* Description — fades in on hover, sits above the bottom info */}
+      <div className="absolute inset-x-0 bottom-22 px-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <p className="text-[10px] leading-snug text-white/70 line-clamp-2">
+          {workflow.description}
+        </p>
+      </div>
+
+      {/* Name + tags + stats — always visible at card bottom */}
       <div className="absolute inset-x-0 bottom-0 p-3">
         <p className="text-xs font-semibold text-white line-clamp-1">
           {workflow.name}
@@ -283,6 +362,21 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
               {tag}
             </span>
           ))}
+        </div>
+        {/* Compact stats row */}
+        <div className="mt-2 flex items-center gap-2.5 text-[9px] text-white/45">
+          <span className="flex items-center gap-0.5">
+            <HeartIcon className="size-2.5" />
+            {fmtCount(workflow.stats.likes)}
+          </span>
+          <span className="flex items-center gap-0.5">
+            <MessageCircleIcon className="size-2.5" />
+            {fmtCount(workflow.stats.comments)}
+          </span>
+          <span className="flex items-center gap-0.5">
+            <BookmarkIcon className="size-2.5" />
+            {fmtCount(workflow.stats.bookmarks)}
+          </span>
         </div>
       </div>
     </button>
