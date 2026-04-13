@@ -4,7 +4,7 @@
     "clerk": {
       "source": "clerk/skills",
       "sourceType": "github",
-      "computedHash": "2c8457cd4de24484b47a25f04cadb2bc1ca41b76a2532811b4ce050f446d3fbb"
+      "computedHash": "404a0bfcaa137641b06938effa44dffb27f050af3501f4df574453c6fd9a16ae"
     },
     "clerk-custom-ui": {
       "source": "clerk/skills",
@@ -14,7 +14,7 @@
     "clerk-nextjs-patterns": {
       "source": "clerk/skills",
       "sourceType": "github",
-      "computedHash": "bc6a67a7a9daf4edf969d529d27ff64dea79b597c20d97d36eac52804934c78b"
+      "computedHash": "f397ece3da422044705341ae85940fc3c36de8f5970e36146dda6ae6955974e2"
     },
     "clerk-setup": {
       "source": "clerk/skills",
@@ -41,10 +41,20 @@
       "sourceType": "github",
       "computedHash": "77faba608ea949351d1757e29e6cb726f6ec5937f7595be0593038a7d2d76bb9"
     },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "6337038fe1fe6bbe1b9f252ab678ee575859190bab6f0f246f4061824eb40875"
+    },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "computedHash": "9fb08ab39585f6f770d0c1c735f83e619aba2089d7ad50ba2a305eff715e08b9"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
     }
   }
 }
