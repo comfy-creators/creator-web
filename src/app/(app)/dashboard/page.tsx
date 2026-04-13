@@ -82,9 +82,11 @@ export default function DashboardPage() {
             Overview of your generation activity
           </p>
         </div>
-        <Button render={<Link href="/generate" />} size="sm">
-          <SparklesIcon data-icon="inline-start" />
-          New Generation
+        <Button asChild size="sm">
+          <Link href="/generate">
+            <SparklesIcon data-icon="inline-start" />
+            New Generation
+          </Link>
         </Button>
       </div>
 
@@ -118,12 +120,8 @@ export default function DashboardPage() {
             <CardTitle className="text-sm font-medium">
               Recent Generations
             </CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              render={<Link href="/generations" />}
-            >
-              View all
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/generations">View all</Link>
             </Button>
           </div>
         </CardHeader>
@@ -138,12 +136,8 @@ export default function DashboardPage() {
             <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
               <ImageIcon className="size-8 opacity-40" />
               <p className="text-sm">No generations yet.</p>
-              <Button
-                variant="outline"
-                size="sm"
-                render={<Link href="/generate" />}
-              >
-                Create your first one
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/generate">Create your first one</Link>
               </Button>
             </div>
           ) : (

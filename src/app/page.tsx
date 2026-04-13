@@ -35,11 +35,11 @@ export default function LandingPage() {
             <span className="text-sm font-semibold tracking-tight">Forge</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" render={<Link href="/sign-in" />}>
-              Sign in
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/sign-in">Sign in</Link>
             </Button>
-            <Button size="sm" render={<Link href="/sign-up" />}>
-              Get started
+            <Button size="sm" asChild>
+              <Link href="/dashboard">Get started</Link>
             </Button>
           </div>
         </div>
@@ -62,16 +62,14 @@ export default function LandingPage() {
             infrastructure knowledge required.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button size="lg" render={<Link href="/sign-up" />}>
-              Start generating
-              <ArrowRightIcon data-icon="inline-end" />
+            <Button size="lg" asChild>
+              <Link href="/sign-up">
+                Start generating
+                <ArrowRightIcon data-icon="inline-end" />
+              </Link>
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              render={<Link href="/sign-in" />}
-            >
-              Sign in
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/sign-in">Sign in</Link>
             </Button>
           </div>
         </section>
@@ -188,12 +186,8 @@ export default function LandingPage() {
               Create an account, add credits, and submit your first generation
               in under two minutes.
             </p>
-            <Button
-              variant="secondary"
-              size="lg"
-              render={<Link href="/sign-up" />}
-            >
-              Get started free
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/dashboard">Get started free</Link>
             </Button>
           </div>
         </section>
