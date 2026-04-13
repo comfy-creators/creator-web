@@ -83,12 +83,8 @@ export default function GenerationsPage() {
                   : `No ${filter} generations.`}
               </p>
               {filter === "all" && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  render={<Link href="/generate" />}
-                >
-                  Create your first one
+                <Button variant="outline" size="sm" asChild>
+                  <Link href="/generate">Create your first one</Link>
                 </Button>
               )}
             </div>
@@ -128,12 +124,8 @@ export default function GenerationsPage() {
                         {gen?.credit_cost ?? "—"}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          render={<Link href={`/generations/${gen?.id}`} />}
-                        >
-                          View
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link href={`/generations/${gen?.id}`}>View</Link>
                         </Button>
                       </TableCell>
                     </TableRow>

@@ -61,13 +61,15 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<Link href="/dashboard" />}>
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                <FlameIcon className="size-4" />
-              </div>
-              <span className="text-sm font-semibold tracking-tight">
-                Forge
-              </span>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href="/dashboard">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                  <FlameIcon className="size-4" />
+                </div>
+                <span className="text-sm font-semibold tracking-tight">
+                  Forge
+                </span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -80,12 +82,14 @@ export function AppSidebar() {
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
-                    render={<Link href={item.href} />}
+                    asChild
                     isActive={pathname === item.href}
                     tooltip={item.label}
                   >
-                    <item.icon />
-                    <span>{item.label}</span>
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

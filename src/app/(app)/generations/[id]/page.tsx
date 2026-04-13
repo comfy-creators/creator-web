@@ -66,10 +66,12 @@ export default function GenerationDetailPage({
         <Button
           variant="ghost"
           size="icon-sm"
-          render={<Link href="/generations" />}
+          asChild
           aria-label="Back to generations"
         >
-          <ArrowLeftIcon />
+          <Link href="/generations" aria-label="Back to generations">
+            <ArrowLeftIcon />
+          </Link>
         </Button>
         <div>
           <h1 className="text-xl font-semibold">Generation Detail</h1>
@@ -224,20 +226,16 @@ export default function GenerationDetailPage({
                 )}
               </div>
               {result?.output_url && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  render={
-                    <a
-                      href={result.output_url}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                >
-                  <DownloadIcon data-icon="inline-start" />
-                  Download
+                <Button variant="outline" size="sm" asChild>
+                  <a
+                    href={result.output_url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <DownloadIcon data-icon="inline-start" />
+                    Download
+                  </a>
                 </Button>
               )}
             </div>
