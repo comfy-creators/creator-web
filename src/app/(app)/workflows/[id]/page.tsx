@@ -2,14 +2,18 @@
 
 "use client";
 
-import { use } from "react";
+import { use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 import { useWorkflows } from "@/hooks/use-workflows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+
+gsap.registerPlugin(useGSAP);
 
 export default function WorkflowPage({
   params,
@@ -19,8 +23,48 @@ export default function WorkflowPage({
   const { id } = use(params);
   const router = useRouter();
   const { data: workflows, isLoading } = useWorkflows();
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   const workflow = workflows?.find((w) => w.id === id);
+
+  const { contextSafe } = useGSAP({ scope: ctaRef });
+
+  const onBtnEnter = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.to(e.currentTarget, {
+      y: -2,
+      scale: 1.04,
+      ease: "back.out(2)",
+      duration: 0.25,
+      overwrite: "auto",
+    });
+  });
+  const onBtnLeave = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    gsap.to(e.currentTarget, {
+      y: 0,
+      scale: 1,
+      ease: "back.out(1.5)",
+      duration: 0.35,
+      overwrite: "auto",
+    });
+  });
+  const onBtnDown = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.to(e.currentTarget, {
+      scale: 0.96,
+      duration: 0.1,
+      ease: "power2.in",
+      overwrite: "auto",
+    });
+  });
+  const onBtnUp = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    gsap.to(e.currentTarget, {
+      scale: 1,
+      ease: "back.out(2)",
+      duration: 0.3,
+      overwrite: "auto",
+    });
+  });
 
   if (!isLoading && workflows && !workflow) {
     return (
@@ -116,14 +160,20 @@ export default function WorkflowPage({
         {isLoading || !workflow ? (
           <Skeleton className="h-10 w-52" />
         ) : (
-          <Button
-            size="lg"
-            className="gap-2"
-            onClick={() => router.push(`/generate?workflow=${workflow.id}`)}
-          >
-            Use this workflow
-            <ArrowRightIcon className="size-4" />
-          </Button>
+          <div ref={ctaRef}>
+            <Button
+              size="lg"
+              className="gap-2"
+              onClick={() => router.push(`/generate?workflow=${workflow.id}`)}
+              onMouseEnter={onBtnEnter}
+              onMouseLeave={onBtnLeave}
+              onMouseDown={onBtnDown}
+              onMouseUp={onBtnUp}
+            >
+              Use this workflow
+              <ArrowRightIcon className="size-4" />
+            </Button>
+          </div>
         )}
       </section>
     </div>
