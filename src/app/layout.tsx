@@ -7,6 +7,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ReactQueryProvider } from "@/components/ReactQueryProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider appearance={{ theme: shadcn }}>
       <html
+        suppressHydrationWarning
         lang="en"
         className={cn(
           "h-full",
@@ -36,7 +38,15 @@ export default function RootLayout({
       >
         <ReactQueryProvider>
           <TooltipProvider>
-            <body className="min-h-full flex flex-col">{children}</body>
+            <body className="min-h-full flex flex-col">
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              ></ThemeProvider>
+              {children}
+            </body>
           </TooltipProvider>
         </ReactQueryProvider>
       </html>
