@@ -36,10 +36,10 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/sign-in">Sign in</Link>
+              <Link href="/sign-in?redirect_url=/discover">Sign in</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link href="/dashboard">Get started</Link>
+              <Link href="/sign-up?redirect_url=/discover">Get started</Link>
             </Button>
           </div>
         </div>
@@ -63,13 +63,13 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" asChild>
-              <Link href="/sign-up">
+              <Link href="/sign-up?redirect_url=/discover">
                 Start generating
                 <ArrowRightIcon data-icon="inline-end" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
-              <Link href="/sign-in">Sign in</Link>
+              <Link href="/sign-in?redirect_url=/discover">Sign in</Link>
             </Button>
           </div>
         </section>
@@ -187,7 +187,9 @@ export default function LandingPage() {
               in under two minutes.
             </p>
             <Button variant="secondary" size="lg" asChild>
-              <Link href="/dashboard">Get started free</Link>
+              <Link href="/sign-up?redirect_url=/discover">
+                Get started free
+              </Link>
             </Button>
           </div>
         </section>
