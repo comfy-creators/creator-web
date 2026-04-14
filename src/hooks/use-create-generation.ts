@@ -1,24 +1,33 @@
 /** @format */
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postApiV1Generate } from "@/api/generations/generations";
-import type { GithubComComfyCreatorsCreatorBackendInternalServiceGenerationGenerationInput } from "@/api/models";
-import { GENERATIONS_QUERY_KEY } from "./use-generations";
+import { useCallback, useState } from "react";
+import type { GithubComComfyCreatorsCreatorBackendInternalServiceGenerationGenerationInput as GenInput } from "@/api/models";
+import { useGenerationsSimulator } from "@/contexts/generations-simulator";
 
 export function useCreateGeneration() {
-  const queryClient = useQueryClient();
+  const { createGeneration } = useGenerationsSimulator();
+  const [isPending, setIsPending] = useState(false);
 
-  return useMutation({
-    mutationFn: (
-      input: GithubComComfyCreatorsCreatorBackendInternalServiceGenerationGenerationInput,
-    ) =>
-      postApiV1Generate({
-        generations: [input],
-        // priority is an internal concept — not exposed in UI
-        priority: "standard",
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: GENERATIONS_QUERY_KEY });
+  const mutate = useCallback(
+    (
+      input: GenInput,
+      options?: {
+        onSuccess?: (id: string) => void;
+        onError?: (err: Error) => void;
+      },
+    ) => {
+      setIsPending(true);
+      try {
+        const id = createGeneration(input);
+        options?.onSuccess?.(id);
+      } catch (err) {
+        options?.onError?.(err as Error);
+      } finally {
+        setIsPending(false);
+      }
     },
-  });
+    [createGeneration],
+  );
+
+  return { mutate, isPending, error: null };
 }

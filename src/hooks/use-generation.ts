@@ -1,14 +1,11 @@
 /** @format */
 
-import { useQuery } from "@tanstack/react-query";
-import { getApiV1GenerationsId } from "@/api/generations/generations";
+import { useGenerationsSimulator } from "@/contexts/generations-simulator";
 
 export const generationQueryKey = (id: string) => ["generations", id] as const;
 
 export function useGeneration(id: string) {
-  return useQuery({
-    queryKey: generationQueryKey(id),
-    queryFn: () => getApiV1GenerationsId(id),
-    enabled: !!id,
-  });
+  const { generations } = useGenerationsSimulator();
+  const data = generations.find((r) => r.generation?.id === id);
+  return { data, isLoading: false };
 }
