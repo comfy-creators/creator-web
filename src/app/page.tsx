@@ -39,7 +39,7 @@ export default function LandingPage() {
               <Link href="/sign-in?redirect_url=/discover">Sign in</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link href="/sign-up?redirect_url=/discover">Get started</Link>
+              <Link href="/discover">Get started</Link>
             </Button>
           </div>
         </div>
@@ -187,9 +187,7 @@ export default function LandingPage() {
               in under two minutes.
             </p>
             <Button variant="secondary" size="lg" asChild>
-              <Link href="/sign-up?redirect_url=/discover">
-                Get started free
-              </Link>
+              <Link href="/discover">Get Started free</Link>
             </Button>
           </div>
         </section>

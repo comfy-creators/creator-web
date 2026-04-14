@@ -1,14 +1,10 @@
 /** @format */
 
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
+// All routes are public — auth is checked per-action, not at the edge.
+// This lets unauthenticated users browse workflows and the generate page.
+export default clerkMiddleware();
 
 export const config = {
   matcher: [
