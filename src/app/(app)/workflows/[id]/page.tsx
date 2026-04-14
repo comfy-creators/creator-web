@@ -10,6 +10,7 @@ import {
   BookmarkIcon,
   HeartIcon,
   MessageCircleIcon,
+  Share2,
   ZapIcon,
 } from "lucide-react";
 import gsap from "gsap";
@@ -131,7 +132,7 @@ export default function WorkflowPage({
                   <h1 className="max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
                     {workflow.name}
                   </h1>
-                  <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+                  <p className="mt-2 max-w-2xl text-base text-muted-foreground">
                     {workflow.description}
                   </p>
                   {/* Stats row */}
@@ -139,42 +140,57 @@ export default function WorkflowPage({
                     <span className="flex items-center gap-1.5">
                       <ZapIcon className="size-3.5" />
                       {fmtCount(workflow.stats.generations)}
-                      <span className="text-xs">runs</span>
+                      <span>runs</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <HeartIcon className="size-3.5" />
                       {fmtCount(workflow.stats.likes)}
-                      <span className="text-xs">likes</span>
+                      <span>likes</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <MessageCircleIcon className="size-3.5" />
                       {fmtCount(workflow.stats.comments)}
-                      <span className="text-xs">comments</span>
+                      <span>comments</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <BookmarkIcon className="size-3.5" />
                       {fmtCount(workflow.stats.bookmarks)}
-                      <span className="text-xs">saves</span>
+                      <span>saves</span>
                     </span>
+                  </div>
+                  <div
+                    ref={ctaRef}
+                    className="mt-6 shrink-0 flex flex-wrap gap-3"
+                  >
+                    <Button
+                      size="lg"
+                      className="gap-2"
+                      onClick={() =>
+                        router.push(`/generate?workflow=${workflow.id}`)
+                      }
+                      onMouseEnter={onBtnEnter}
+                      onMouseLeave={onBtnLeave}
+                      onMouseDown={onBtnDown}
+                      onMouseUp={onBtnUp}
+                    >
+                      Use this workflow
+                      <ArrowRightIcon className="size-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="gap-2"
+                      onMouseEnter={onBtnEnter}
+                      onMouseLeave={onBtnLeave}
+                      onMouseDown={onBtnDown}
+                      onMouseUp={onBtnUp}
+                    >
+                      Share
+                      <Share2 className="size-4" />
+                    </Button>
                   </div>
                 </div>
                 {/* Right: CTA — right of title on desktop, below stats on mobile */}
-                <div ref={ctaRef} className="mt-6 shrink-0 md:mt-0">
-                  <Button
-                    size="lg"
-                    className="gap-2"
-                    onClick={() =>
-                      router.push(`/generate?workflow=${workflow.id}`)
-                    }
-                    onMouseEnter={onBtnEnter}
-                    onMouseLeave={onBtnLeave}
-                    onMouseDown={onBtnDown}
-                    onMouseUp={onBtnUp}
-                  >
-                    Use this workflow
-                    <ArrowRightIcon className="size-4" />
-                  </Button>
-                </div>
               </div>
             </div>
           </>
