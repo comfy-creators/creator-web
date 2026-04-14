@@ -18,6 +18,7 @@ import { useWorkflows, type Workflow } from "@/hooks/use-workflows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 gsap.registerPlugin(useGSAP);
 
@@ -111,11 +112,13 @@ export default function DiscoverPage() {
           <Skeleton className="h-[58vh] w-full rounded-none" />
         ) : (
           <>
-            <img
+            <Image
               src={featured.thumbnailUrl}
               alt=""
               aria-hidden
               className="absolute inset-0 h-full w-full object-cover"
+              width={1080}
+              height={720}
             />
             {/* Layered gradient: darken edges + heavy bottom fade */}
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/20 to-transparent" />
@@ -291,11 +294,13 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
       aria-label={`View ${workflow.name} workflow`}
     >
       {/* Poster image */}
-      <img
+      <Image
         src={workflow.thumbnailUrl}
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        width={360}
+        height={540}
       />
 
       {/* Gradient — solid black base covering the info panel, fades up */}

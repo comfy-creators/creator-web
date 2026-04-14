@@ -20,6 +20,7 @@ import { useWorkflows } from "@/hooks/use-workflows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 gsap.registerPlugin(useGSAP);
 
@@ -96,9 +97,11 @@ export default function WorkflowPage({
           <Skeleton className="h-[52vh] w-full rounded-none" />
         ) : (
           <>
-            <img
+            <Image
               src={workflow.thumbnailUrl}
               alt=""
+              width={720}
+              height={405}
               aria-hidden
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -218,10 +221,12 @@ export default function WorkflowPage({
                 key={i}
                 className="aspect-video w-64 shrink-0 overflow-hidden rounded-xl bg-muted"
               >
-                <img
+                <Image
                   src={src}
                   alt={`Sample output ${i + 1}`}
                   className="h-full w-full object-cover"
+                  width={256}
+                  height={144}
                 />
               </div>
             ))}

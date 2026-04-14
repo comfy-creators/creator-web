@@ -25,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 
 export default function GeneratePage() {
   const router = useRouter();
@@ -79,10 +80,12 @@ export default function GeneratePage() {
       {/* Workflow context banner */}
       {workflow && (
         <div className="flex items-center gap-4 overflow-hidden rounded-xl border border-border/50 bg-muted/30 p-4">
-          <img
+          <Image
             src={workflow.thumbnailUrl}
             alt={workflow.name}
             className="h-16 w-12 shrink-0 rounded-lg object-cover"
+            width={480}
+            height={640}
           />
           <div className="min-w-0">
             <div className="mb-1 flex flex-wrap gap-1.5">
