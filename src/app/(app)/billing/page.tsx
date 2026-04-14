@@ -2,31 +2,13 @@
 
 "use client";
 
-/** @format */
-
-import { CoinsIcon, ExternalLinkIcon, PlusIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, CoinsIcon, PlusIcon } from "lucide-react";
 
 import { useCreditBalance } from "@/hooks/use-credit-balance";
 import { useTransactionHistory } from "@/hooks/use-transaction-history";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 export default function BillingPage() {
   const { totalCredits, isLoading: loadingCredits } = useCreditBalance();
@@ -38,117 +20,127 @@ export default function BillingPage() {
   }
 
   return (
-    <>
-      <div>
-        <h1 className="text-xl font-semibold">Billing</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="mx-auto w-full max-w-4xl px-6 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Manage your credits and purchases
         </p>
       </div>
 
-      {/* Balance hero */}
-      <Card>
-        <CardContent className="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <CoinsIcon className="size-6" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Current balance</p>
-              {loadingCredits ? (
-                <Skeleton className="mt-1 h-8 w-24" />
-              ) : (
-                <p className="text-3xl font-semibold tabular-nums">
-                  {totalCredits?.toLocaleString() ?? "—"}
-                  <span className="ml-1.5 text-base font-normal text-muted-foreground">
-                    credits
-                  </span>
-                </p>
-              )}
-            </div>
-          </div>
-          <Button onClick={handleBuyCredits}>
-            <PlusIcon data-icon="inline-start" />
-            Buy Credits
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Separator />
+      {/* Balance row */}
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b pb-8">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Current balance
+          </p>
+          {loadingCredits ? (
+            <Skeleton className="mt-2 h-10 w-32" />
+          ) : (
+            <p className="mt-1 text-4xl font-semibold tabular-nums">
+              {totalCredits?.toLocaleString() ?? "—"}
+              <span className="ml-2 text-lg font-normal text-muted-foreground">
+                credits
+              </span>
+            </p>
+          )}
+        </div>
+        <Button onClick={handleBuyCredits} className="gap-2">
+          <PlusIcon className="size-4" />
+          Buy Credits
+        </Button>
+      </div>
 
       {/* Transaction history */}
-      <div>
-        <h2 className="mb-3 text-sm font-medium">Transaction History</h2>
-        <Card>
-          <CardContent className="p-0">
-            {loadingTx ? (
-              <div className="flex flex-col gap-3 p-6">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <Skeleton key={i} className="h-8 w-full" />
-                ))}
+      <div className="mt-8">
+        <p className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          Transaction History
+        </p>
+
+        {loadingTx ? (
+          <div className="flex flex-col divide-y rounded-lg border">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-4 py-4">
+                <Skeleton className="size-8 shrink-0 rounded-full" />
+                <div className="flex flex-1 flex-col gap-2">
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-3 w-28" />
+                </div>
+                <Skeleton className="h-5 w-12" />
               </div>
-            ) : !transactions?.length ? (
-              <div className="flex flex-col items-center gap-1.5 py-14 text-center text-muted-foreground">
-                <CoinsIcon className="size-7 opacity-40" />
-                <p className="text-sm">No transactions yet.</p>
-                <p className="text-xs opacity-70">
-                  Purchases and generation costs will appear here.
-                </p>
+            ))}
+          </div>
+        ) : !transactions?.length ? (
+          <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed py-20 text-center">
+            <CoinsIcon className="size-10 opacity-30" />
+            <div>
+              <p className="text-sm font-medium">No transactions yet</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Purchases and generation costs will appear here
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col divide-y rounded-lg border">
+            {transactions.map((tx) => (
+              <div
+                key={tx.id}
+                className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/40"
+              >
+                {/* Icon */}
+                <div
+                  className={[
+                    "flex size-8 shrink-0 items-center justify-center rounded-full",
+                    tx.type === "credit_purchase"
+                      ? "bg-green-500/10 text-green-600 dark:text-green-400"
+                      : "bg-muted text-muted-foreground",
+                  ].join(" ")}
+                >
+                  {tx.type === "credit_purchase" ? (
+                    <ArrowDownIcon className="size-3.5" />
+                  ) : (
+                    <ArrowUpIcon className="size-3.5" />
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm">{tx.description}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {new Date(tx.created_at).toLocaleString()}
+                  </p>
+                </div>
+
+                {/* Type badge */}
+                <Badge
+                  variant="secondary"
+                  className={
+                    tx.type === "credit_purchase"
+                      ? "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400"
+                      : ""
+                  }
+                >
+                  {tx.type === "credit_purchase" ? "Purchase" : "Spend"}
+                </Badge>
+
+                {/* Amount */}
+                <span
+                  className={[
+                    "shrink-0 text-sm font-medium tabular-nums",
+                    tx.type === "credit_purchase"
+                      ? "text-green-700 dark:text-green-400"
+                      : "text-muted-foreground",
+                  ].join(" ")}
+                >
+                  {tx.type === "credit_purchase" ? "+" : "−"}
+                  {tx.amount.toLocaleString()}
+                </span>
               </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.map((tx) => (
-                    <TableRow key={tx.id}>
-                      <TableCell className="text-xs">
-                        {tx.description}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            tx.type === "credit_purchase"
-                              ? "secondary"
-                              : "outline"
-                          }
-                          className={
-                            tx.type === "credit_purchase"
-                              ? "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400"
-                              : ""
-                          }
-                        >
-                          {tx.type === "credit_purchase" ? "Purchase" : "Spend"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        {new Date(tx.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell
-                        className={[
-                          "text-right tabular-nums text-xs font-medium",
-                          tx.type === "credit_purchase"
-                            ? "text-green-700 dark:text-green-400"
-                            : "text-muted-foreground",
-                        ].join(" ")}
-                      >
-                        {tx.type === "credit_purchase" ? "+" : "-"}
-                        {tx.amount.toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
+            ))}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
