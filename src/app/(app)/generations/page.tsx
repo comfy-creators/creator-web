@@ -2,10 +2,7 @@
 
 "use client";
 
-/** @format */
-
 import Link from "next/link";
-import { useState } from "react";
 import { ImageIcon } from "lucide-react";
 
 import { useGenerations } from "@/hooks/use-generations";
@@ -16,126 +13,114 @@ import {
 } from "@/lib/generation-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const STATUS_FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Queued", value: "queued" },
-  { label: "Running", value: "running" },
-  { label: "Completed", value: "completed" },
-  { label: "Failed", value: "failed" },
-] as const;
-
-type StatusFilter = (typeof STATUS_FILTERS)[number]["value"];
 
 export default function GenerationsPage() {
-  const [filter, setFilter] = useState<StatusFilter>("all");
   const { data: generations, isLoading } = useGenerations({ limit: 100 });
 
-  const filtered =
-    filter === "all"
-      ? (generations ?? [])
-      : (generations ?? []).filter((g) => g.generation?.status === filter);
-
   return (
-    <>
-      <div>
-        <h1 className="text-xl font-semibold">Generations</h1>
-        <p className="text-sm text-muted-foreground">
-          All your generation requests
+    <div className="mx-auto w-full max-w-4xl px-6 py-8">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight">Generations</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          All your image generation requests
         </p>
       </div>
 
-      <Tabs value={filter} onValueChange={(v) => setFilter(v as StatusFilter)}>
-        <TabsList>
-          {STATUS_FILTERS.map((s) => (
-            <TabsTrigger key={s.value} value={s.value}>
-              {s.label}
-            </TabsTrigger>
+      {isLoading ? (
+        <div className="flex flex-col divide-y rounded-lg border">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 px-4 py-4">
+              <Skeleton className="size-12 shrink-0 rounded-md" />
+              <div className="flex flex-1 flex-col gap-2">
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+              <Skeleton className="h-5 w-20 rounded-full" />
+            </div>
           ))}
-        </TabsList>
-      </Tabs>
+        </div>
+      ) : !generations?.length ? (
+        <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed py-20 text-center">
+          <ImageIcon className="size-10 opacity-30" />
+          <div>
+            <p className="text-sm font-medium">No generations yet</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Your generation history will appear here
+            </p>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/generate">Create your first one</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-col divide-y rounded-lg border">
+          {generations.map((item) => {
+            const gen = item.generation;
+            const thumbnail = gen?.attachments?.find(
+              (a) => a.type === "image",
+            )?.url;
 
-      <Card>
-        <CardContent className="p-0">
-          {isLoading ? (
-            <div className="flex flex-col gap-3 p-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-8 w-full" />
-              ))}
-            </div>
-          ) : !filtered.length ? (
-            <div className="flex flex-col items-center gap-2 py-16 text-center text-muted-foreground">
-              <ImageIcon className="size-8 opacity-40" />
-              <p className="text-sm">
-                {filter === "all"
-                  ? "No generations yet."
-                  : `No ${filter} generations.`}
-              </p>
-              {filter === "all" && (
-                <Button variant="outline" size="sm" asChild>
-                  <Link href="/generate">Create your first one</Link>
+            return (
+              <div
+                key={gen?.id}
+                className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/40"
+              >
+                {/* Thumbnail */}
+                <div className="size-12 shrink-0 overflow-hidden rounded-md bg-muted">
+                  {thumbnail ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={thumbnail}
+                      alt=""
+                      className="size-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex size-full items-center justify-center">
+                      <ImageIcon className="size-5 opacity-30" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">
+                    {gen?.prompt ?? "Untitled generation"}
+                  </p>
+                  <p className="mt-0.5 font-mono text-xs text-muted-foreground">
+                    {gen?.id?.slice(0, 8)}…
+                    {gen?.enqueued_at && (
+                      <span className="ml-2 not-mono font-sans">
+                        · {new Date(gen.enqueued_at).toLocaleString()}
+                      </span>
+                    )}
+                  </p>
+                </div>
+
+                {/* Credits */}
+                {gen?.credit_cost != null && (
+                  <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                    {gen.credit_cost} cr
+                  </span>
+                )}
+
+                {/* Status */}
+                <Badge
+                  variant={statusVariant(gen?.status)}
+                  className={statusColorClass(gen?.status)}
+                >
+                  {formatGenerationStatus(gen?.status)}
+                </Badge>
+
+                {/* Action */}
+                <Button variant="ghost" size="sm" asChild className="shrink-0">
+                  <Link href={`/generations/${gen?.id}`}>View</Link>
                 </Button>
-              )}
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted</TableHead>
-                  <TableHead className="text-right">Credits</TableHead>
-                  <TableHead />
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((item) => {
-                  const gen = item.generation;
-                  return (
-                    <TableRow key={gen?.id}>
-                      <TableCell className="font-mono text-xs text-muted-foreground">
-                        {gen?.id?.slice(0, 8)}…
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={statusVariant(gen?.status)}
-                          className={statusColorClass(gen?.status)}
-                        >
-                          {formatGenerationStatus(gen?.status)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        {gen?.enqueued_at
-                          ? new Date(gen.enqueued_at).toLocaleString()
-                          : "—"}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums text-xs">
-                        {gen?.credit_cost ?? "—"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/generations/${gen?.id}`}>View</Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
-    </>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }

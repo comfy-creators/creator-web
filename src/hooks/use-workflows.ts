@@ -15,6 +15,10 @@ export interface Workflow {
   description: string;
   category: string;
   tags: string[];
+  /**
+   * Extended details about the workflow, such as the specific AI model used, recommended use cases, and tips for best results. This can be displayed on the workflow detail page to help users understand the strengths and ideal applications of this workflow.
+   */
+  details: string;
   thumbnailUrl: string;
   sampleOutputs: string[];
   stats: WorkflowStats;
@@ -36,6 +40,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/glamour-s3/800/600",
     ],
     stats: { generations: 18400, likes: 1240, comments: 94, bookmarks: 382 },
+    details: "",
   },
   {
     id: "cinematic-headshot",
@@ -50,6 +55,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/cinematic-s2/800/600",
     ],
     stats: { generations: 9700, likes: 820, comments: 61, bookmarks: 215 },
+    details: "",
   },
   {
     id: "fantasy-portrait",
@@ -64,6 +70,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/fantasy-s2/800/600",
     ],
     stats: { generations: 6200, likes: 540, comments: 38, bookmarks: 170 },
+    details: "",
   },
   {
     id: "epic-landscape",
@@ -78,6 +85,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/landscape-s2/800/600",
     ],
     stats: { generations: 14100, likes: 2100, comments: 147, bookmarks: 630 },
+    details: "",
   },
   {
     id: "scifi-city",
@@ -92,6 +100,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/scifi-s2/800/600",
     ],
     stats: { generations: 22300, likes: 3400, comments: 208, bookmarks: 910 },
+    details: "",
   },
   {
     id: "product-clean",
@@ -106,6 +115,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/product-s2/800/600",
     ],
     stats: { generations: 31500, likes: 1890, comments: 122, bookmarks: 540 },
+    details: "",
   },
   {
     id: "lifestyle-product",
@@ -120,6 +130,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/lifestyle-s2/800/600",
     ],
     stats: { generations: 8800, likes: 730, comments: 55, bookmarks: 280 },
+    details: "",
   },
   {
     id: "abstract-art",
@@ -134,6 +145,7 @@ const MOCK_WORKFLOWS: Workflow[] = [
       "https://picsum.photos/seed/abstract-s2/800/600",
     ],
     stats: { generations: 5600, likes: 440, comments: 29, bookmarks: 145 },
+    details: "",
   },
 ];
 
