@@ -18,7 +18,6 @@ import { useWorkflows, type Workflow } from "@/hooks/use-workflows";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP);
 
@@ -192,11 +191,11 @@ export default function DiscoverPage() {
           ? Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="flex flex-col gap-4">
                 <Skeleton className="h-4 w-28" />
-                <div className="flex gap-4">
-                  {Array.from({ length: 4 }).map((_, j) => (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {Array.from({ length: 5 }).map((_, j) => (
                     <Skeleton
                       key={j}
-                      className="aspect-2/3 w-44 shrink-0 rounded-xl"
+                      className="aspect-2/3 w-full rounded-xl"
                     />
                   ))}
                 </div>
@@ -211,13 +210,9 @@ export default function DiscoverPage() {
                     {groups[category].length !== 1 ? "s" : ""}
                   </span>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {groups[category].map((workflow, i) => (
-                    <WorkflowCard
-                      key={workflow.id}
-                      workflow={workflow}
-                      featured={i === 0}
-                    />
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {groups[category].map((workflow) => (
+                    <WorkflowCard key={workflow.id} workflow={workflow} />
                   ))}
                 </div>
               </div>
@@ -227,13 +222,7 @@ export default function DiscoverPage() {
   );
 }
 
-function WorkflowCard({
-  workflow,
-  featured = false,
-}: {
-  workflow: Workflow;
-  featured?: boolean;
-}) {
+function WorkflowCard({ workflow }: { workflow: Workflow }) {
   const router = useRouter();
   const cardRef = useRef<HTMLButtonElement>(null);
 
@@ -298,10 +287,7 @@ function WorkflowCard({
     <button
       ref={cardRef}
       onClick={() => router.push(`/workflows/${workflow.id}`)}
-      className={cn(
-        "group relative shrink-0 cursor-pointer overflow-hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        featured ? "aspect-2/3 w-56" : "aspect-2/3 w-44",
-      )}
+      className="group relative aspect-2/3 w-full cursor-pointer overflow-hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       aria-label={`View ${workflow.name} workflow`}
     >
       {/* Poster image */}
@@ -309,72 +295,50 @@ function WorkflowCard({
         src={workflow.thumbnailUrl}
         alt=""
         aria-hidden
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
 
-      {/* Deep gradient — heavier bottom fade for readability */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent" />
+      {/* Gradient — solid black base covering the info panel, fades up */}
+      <div className="absolute inset-0 bg-linear-to-t from-black via-black/60 to-transparent" />
 
-      {/* Hover shade */}
-      <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      {/* Hover tint */}
+      <div className="absolute inset-0 bg-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      {/* Category pill — top-left, always visible */}
-      <div className="absolute left-2.5 top-2.5">
-        <span className="rounded-full border border-white/10 bg-black/50 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide text-white/70 backdrop-blur-sm">
-          {workflow.category}
-        </span>
-      </div>
-
-      {/* Generations count — top-right, always visible social proof */}
+      {/* Runs count — top right, social proof */}
       <div className="absolute right-2.5 top-2.5">
-        <span className="flex items-center gap-0.5 rounded-full border border-white/10 bg-black/50 px-2 py-0.5 text-[9px] font-medium text-white/70 backdrop-blur-sm">
-          <ZapIcon className="size-2.5" />
+        <span className="flex items-center gap-1 rounded-full border border-white/15 bg-black/60 px-2 py-0.5 text-xs font-semibold text-white/80 backdrop-blur-sm">
+          <ZapIcon className="size-3" />
           {fmtCount(workflow.stats.generations)}
         </span>
       </div>
 
-      {/* Center "Use →" CTA — appears on hover */}
+      {/* "Use this →" CTA — fades in at center on hover */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <span className="flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
-          Use
-          <ArrowRightIcon className="size-3" />
+        <span className="flex items-center gap-1.5 rounded-full border border-white/30 bg-white/20 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md">
+          Use this
+          <ArrowRightIcon className="size-3.5" />
         </span>
       </div>
 
-      {/* Description — fades in on hover, sits above the bottom info */}
-      <div className="absolute inset-x-0 bottom-22 px-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <p className="text-[10px] leading-snug text-white/70 line-clamp-2">
-          {workflow.description}
-        </p>
-      </div>
-
-      {/* Name + tags + stats — always visible at card bottom */}
+      {/* Bottom info — always visible */}
       <div className="absolute inset-x-0 bottom-0 p-3">
-        <p className="text-xs font-semibold text-white line-clamp-1">
+        <p className="text-base font-semibold text-start leading-tight text-white line-clamp-1">
           {workflow.name}
         </p>
-        <div className="mt-1.5 flex flex-wrap gap-1">
-          {workflow.tags.slice(0, 2).map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-white/15 px-1.5 py-0.5 text-[10px] leading-tight text-white/80"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        {/* Compact stats row */}
-        <div className="mt-2 flex items-center gap-2.5 text-[9px] text-white/45">
-          <span className="flex items-center gap-0.5">
-            <HeartIcon className="size-2.5" />
+        <p className="mt-1 text-sm text-start leading-snug text-white/65 line-clamp-1">
+          {workflow.description}
+        </p>
+        <div className="mt-2 flex items-center gap-3 text-sm text-white/55">
+          <span className="flex items-center gap-1">
+            <HeartIcon className="size-3" />
             {fmtCount(workflow.stats.likes)}
           </span>
-          <span className="flex items-center gap-0.5">
-            <MessageCircleIcon className="size-2.5" />
+          <span className="flex items-center gap-1">
+            <MessageCircleIcon className="size-3" />
             {fmtCount(workflow.stats.comments)}
           </span>
-          <span className="flex items-center gap-0.5">
-            <BookmarkIcon className="size-2.5" />
+          <span className="flex items-center gap-1">
+            <BookmarkIcon className="size-3" />
             {fmtCount(workflow.stats.bookmarks)}
           </span>
         </div>

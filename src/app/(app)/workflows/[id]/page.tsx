@@ -118,41 +118,63 @@ export default function WorkflowPage({
 
             {/* Content */}
             <div className="absolute inset-x-0 bottom-0 px-8 pb-10 md:px-14 md:pb-14">
-              <div className="mb-3 flex flex-wrap gap-2">
-                {workflow.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <h1 className="max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-                {workflow.name}
-              </h1>
-              <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-                {workflow.description}
-              </p>
-              {/* Stats row */}
-              <div className="mt-4 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <ZapIcon className="size-3.5" />
-                  {fmtCount(workflow.stats.generations)}
-                  <span className="text-xs">runs</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <HeartIcon className="size-3.5" />
-                  {fmtCount(workflow.stats.likes)}
-                  <span className="text-xs">likes</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MessageCircleIcon className="size-3.5" />
-                  {fmtCount(workflow.stats.comments)}
-                  <span className="text-xs">comments</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <BookmarkIcon className="size-3.5" />
-                  {fmtCount(workflow.stats.bookmarks)}
-                  <span className="text-xs">saves</span>
-                </span>
+              <div className="flex flex-col gap-0 md:flex-row md:items-end md:justify-between md:gap-8">
+                {/* Left: meta */}
+                <div>
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {workflow.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <h1 className="max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
+                    {workflow.name}
+                  </h1>
+                  <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+                    {workflow.description}
+                  </p>
+                  {/* Stats row */}
+                  <div className="mt-4 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <ZapIcon className="size-3.5" />
+                      {fmtCount(workflow.stats.generations)}
+                      <span className="text-xs">runs</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <HeartIcon className="size-3.5" />
+                      {fmtCount(workflow.stats.likes)}
+                      <span className="text-xs">likes</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <MessageCircleIcon className="size-3.5" />
+                      {fmtCount(workflow.stats.comments)}
+                      <span className="text-xs">comments</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <BookmarkIcon className="size-3.5" />
+                      {fmtCount(workflow.stats.bookmarks)}
+                      <span className="text-xs">saves</span>
+                    </span>
+                  </div>
+                </div>
+                {/* Right: CTA — right of title on desktop, below stats on mobile */}
+                <div ref={ctaRef} className="mt-6 shrink-0 md:mt-0">
+                  <Button
+                    size="lg"
+                    className="gap-2"
+                    onClick={() =>
+                      router.push(`/generate?workflow=${workflow.id}`)
+                    }
+                    onMouseEnter={onBtnEnter}
+                    onMouseLeave={onBtnLeave}
+                    onMouseDown={onBtnDown}
+                    onMouseUp={onBtnUp}
+                  >
+                    Use this workflow
+                    <ArrowRightIcon className="size-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </>
@@ -187,28 +209,6 @@ export default function WorkflowPage({
                 />
               </div>
             ))}
-          </div>
-        )}
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="px-8 py-10 md:px-14">
-        {isLoading || !workflow ? (
-          <Skeleton className="h-10 w-52" />
-        ) : (
-          <div ref={ctaRef}>
-            <Button
-              size="lg"
-              className="gap-2"
-              onClick={() => router.push(`/generate?workflow=${workflow.id}`)}
-              onMouseEnter={onBtnEnter}
-              onMouseLeave={onBtnLeave}
-              onMouseDown={onBtnDown}
-              onMouseUp={onBtnUp}
-            >
-              Use this workflow
-              <ArrowRightIcon className="size-4" />
-            </Button>
           </div>
         )}
       </section>
