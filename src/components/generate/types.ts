@@ -1,0 +1,35 @@
+/** @format */
+
+export interface GenerateFormValues {
+  prompt: string;
+  negativePrompt: string;
+  imageSizePreset: string;
+  inferenceSteps: number;
+  guidanceScale: number;
+  seed: string;
+  numImages: number;
+}
+
+export const DEFAULT_FORM_VALUES: GenerateFormValues = {
+  prompt: "",
+  negativePrompt: "",
+  imageSizePreset: "square_hd",
+  inferenceSteps: 8,
+  guidanceScale: 1,
+  seed: "",
+  numImages: 1,
+};
+
+export const IMAGE_SIZE_PRESETS = [
+  { label: "Square", value: "square", width: 512, height: 512 },
+  { label: "Square HD", value: "square_hd", width: 1024, height: 1024 },
+  { label: "Portrait 3:4", value: "portrait_3_4", width: 768, height: 1024 },
+  { label: "Portrait 9:16", value: "portrait_9_16", width: 576, height: 1024 },
+  { label: "Landscape 4:3", value: "landscape_4_3", width: 1024, height: 768 },
+  {
+    label: "Landscape 16:9",
+    value: "landscape_16_9",
+    width: 1024,
+    height: 576,
+  },
+] as const;

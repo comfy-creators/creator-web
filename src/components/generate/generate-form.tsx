@@ -35,11 +35,8 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 
-import { PreviewPanel } from "./generate/preview-panel";
-import {
-  DEFAULT_FORM_VALUES,
-  IMAGE_SIZE_PRESETS,
-} from "./generate/types";
+import { PreviewPanel } from "./preview-panel";
+import { DEFAULT_FORM_VALUES, IMAGE_SIZE_PRESETS } from "./types";
 
 interface GenerateFormProps {
   workflowId: string | null;
@@ -282,9 +279,7 @@ export default function GenerateForm({ workflowId }: GenerateFormProps) {
                             type="number"
                             placeholder="random"
                             value={field.state.value}
-                            onChange={(e) =>
-                              field.handleChange(e.target.value)
-                            }
+                            onChange={(e) => field.handleChange(e.target.value)}
                             onBlur={field.handleBlur}
                             aria-invalid={isInvalid}
                           />
@@ -336,7 +331,7 @@ export default function GenerateForm({ workflowId }: GenerateFormProps) {
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-center justify-between border-t border-border/60 px-6 py-3">
+          <div className="mt-auto flex items-center justify-between border-t border-border px-6 py-3">
             <Button
               type="button"
               variant="ghost"
@@ -387,4 +382,8 @@ export default function GenerateForm({ workflowId }: GenerateFormProps) {
       </form>
     </div>
   );
+}
+
+interface GenerateFormProps {
+  workflowId: string | null;
 }

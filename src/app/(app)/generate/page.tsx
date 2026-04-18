@@ -1,7 +1,7 @@
 /** @format */
 
-import GenerateForm from "@/components/generate-form";
-import GenerateHeading from "@/components/generate-heading";
+import GenerateForm from "@/components/generate/generate-form";
+import GenerateHeading from "@/components/generate/generate-heading";
 
 type Props = {
   searchParams: Promise<{ workflow?: string }>;

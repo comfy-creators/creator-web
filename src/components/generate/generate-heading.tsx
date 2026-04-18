@@ -13,7 +13,7 @@ const GenerateHeading: FC<GenerateHeadingProps> = ({ workflowId }) => {
   const workflow = workflows?.find((w) => w.id === workflowId);
 
   return (
-    <div className="ml-6 flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5">
       <h1 className="text-3xl">
         <span className="text-muted-foreground">workflow/</span>Generate{" "}
         {workflow?.name}

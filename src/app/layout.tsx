@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { ReactQueryProvider } from "@/components/ReactQueryProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
@@ -45,6 +46,7 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               ></ThemeProvider>
+              <Toaster />
               {children}
             </body>
           </TooltipProvider>
