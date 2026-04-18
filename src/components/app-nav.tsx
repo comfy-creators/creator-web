@@ -24,8 +24,8 @@ export function AppNav() {
   const { isLoaded, isSignedIn } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/40 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-6">
+    <header className="sticky w-full top-0 z-50 border-b border-border/40 bg-background/90 backdrop-blur-md">
+      <div className="mx-[10%] flex h-14 items-center gap-6 px-6 justify-between">
         {/* Logo */}
         <Link href="/discover" className="flex shrink-0 items-center gap-2">
           <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -53,7 +53,7 @@ export function AppNav() {
         </nav>
 
         {/* Right side */}
-        <div className="ml-auto flex items-center gap-3">
+        <div className="flex items-center gap-3">
           {isLoaded && isSignedIn ? (
             <>
               <div className="flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/40 px-3 py-1">
