@@ -1,6 +1,7 @@
 /** @format */
 
 import GenerateForm from "@/components/generate-form";
+import GenerateHeading from "@/components/generate-heading";
 
 type Props = {
   searchParams: Promise<{ workflow?: string }>;
@@ -8,5 +9,10 @@ type Props = {
 
 export default async function GeneratePage({ searchParams }: Props) {
   const { workflow } = await searchParams;
-  return <GenerateForm workflowId={workflow ?? null} />;
+  return (
+    <div className="mx-[12%] flex flex-col gap-10 py-10">
+      <GenerateHeading workflowId={workflow ?? null} />
+      <GenerateForm workflowId={workflow ?? null} />
+    </div>
+  );
 }
