@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
+  Bookmark,
   BookmarkIcon,
+  Heart,
   HeartIcon,
   MessageCircleIcon,
   Share2,
@@ -190,6 +192,28 @@ export default function WorkflowPage({
                     >
                       Share
                       <Share2 className="size-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="gap-2"
+                      onMouseEnter={onBtnEnter}
+                      onMouseLeave={onBtnLeave}
+                      onMouseDown={onBtnDown}
+                      onMouseUp={onBtnUp}
+                    >
+                      <Heart className="size-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="gap-2"
+                      onMouseEnter={onBtnEnter}
+                      onMouseLeave={onBtnLeave}
+                      onMouseDown={onBtnDown}
+                      onMouseUp={onBtnUp}
+                    >
+                      <Bookmark className="size-4" />
                     </Button>
                   </div>
                 </div>
