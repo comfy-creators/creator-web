@@ -7,7 +7,7 @@ export function useDashboardStats() {
   const { data: generations, isLoading: loadingGens } = useGenerations({
     limit: 100,
   });
-  const { totalCredits, isLoading: loadingCredits } = useCreditBalance();
+  const { data: credits, isLoading: loadingCredits } = useCreditBalance();
 
   const active =
     generations?.filter(
@@ -22,7 +22,7 @@ export function useDashboardStats() {
     0;
 
   return {
-    credits: totalCredits,
+    credits: credits?.balance,
     total: generations?.length ?? 0,
     active,
     completed,

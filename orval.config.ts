@@ -20,7 +20,7 @@ export default defineConfig({
     input: {
       filters: {
         mode: "exclude",
-        tags: ["webhooks"],
+        tags: ["webhooks", "admin"],
       },
       target: "./specs.json",
     },
@@ -34,6 +34,10 @@ export default defineConfig({
       fileExtension: ".schema.ts",
     },
     input: {
+      filters: {
+        mode: "exclude",
+        tags: ["webhooks", "admin"],
+      },
       target: "./specs.json",
     },
   },
