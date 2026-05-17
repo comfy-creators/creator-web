@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BillingPage() {
-  const { totalCredits, isLoading: loadingCredits } = useCreditBalance();
+  const { data: credits, isLoading: loadingCredits } = useCreditBalance();
   const { data: transactions, isLoading: loadingTx } = useTransactionHistory();
 
   function handleBuyCredits() {
@@ -39,7 +39,7 @@ export default function BillingPage() {
             <Skeleton className="mt-2 h-10 w-32" />
           ) : (
             <p className="mt-1 text-4xl font-semibold tabular-nums">
-              {totalCredits?.toLocaleString() ?? "—"}
+              {credits?.balance?.toLocaleString() ?? "—"}
               <span className="ml-2 text-lg font-normal text-muted-foreground">
                 credits
               </span>

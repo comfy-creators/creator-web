@@ -20,7 +20,7 @@ const navLinks = [
 
 export function AppNav() {
   const pathname = usePathname();
-  const { totalCredits, isLoading } = useCreditBalance();
+  const { data: credits, isLoading } = useCreditBalance();
   const { isLoaded, isSignedIn } = useAuth();
 
   return (
@@ -62,7 +62,7 @@ export function AppNav() {
                   <Skeleton className="h-3 w-12" />
                 ) : (
                   <span className="text-xs font-medium tabular-nums">
-                    {totalCredits?.toLocaleString() ?? "—"}
+                    {credits?.balance?.toLocaleString() ?? "—"}
                   </span>
                 )}
               </div>
