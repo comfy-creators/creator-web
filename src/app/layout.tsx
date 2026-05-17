@@ -5,9 +5,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { shadcn } from "@clerk/ui/themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ReactQueryProvider } from "@/components/providers/ReactQueryProvider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/providers";
 
