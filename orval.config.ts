@@ -34,6 +34,10 @@ export default defineConfig({
       fileExtension: ".schema.ts",
     },
     input: {
+      filters: {
+        mode: "exclude",
+        tags: ["webhooks", "admin"],
+      },
       target: "./specs.json",
     },
   },
