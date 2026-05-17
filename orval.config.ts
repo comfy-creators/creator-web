@@ -20,7 +20,7 @@ export default defineConfig({
     input: {
       filters: {
         mode: "exclude",
-        tags: ["webhooks"],
+        tags: ["webhooks", "admin"],
       },
       target: "./specs.json",
     },

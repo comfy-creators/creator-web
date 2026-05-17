@@ -6,13 +6,6 @@
  * OpenAPI spec version: 1.0
  */
 
-export * from './deleteApiV1AdminInstancesId202';
-export * from './deleteApiV1AdminInstancesId400';
-export * from './deleteApiV1AdminInstancesId500';
-export * from './getApiV1AdminInstancesDb500';
-export * from './getApiV1AdminInstancesInventory500';
-export * from './getApiV1AdminInstancesInventoryParams';
-export * from './getApiV1AdminInstancesLive500';
 export * from './getApiV1BatchesId403';
 export * from './getApiV1BatchesId404';
 export * from './getApiV1BatchesId500';
@@ -65,13 +58,6 @@ export * from './githubComComfyCreatorsCreatorBackendInternalDomainTeamWithMembe
 export * from './githubComComfyCreatorsCreatorBackendInternalDomainUser';
 export * from './githubComComfyCreatorsCreatorBackendInternalServiceGenerationGenerationInput';
 export * from './githubComComfyCreatorsCreatorBackendInternalServiceGenerationGenerationResult';
-export * from './postApiV1AdminInstancesIdMarkDead200';
-export * from './postApiV1AdminInstancesIdMarkDead400';
-export * from './postApiV1AdminInstancesIdMarkDead500';
-export * from './postApiV1AdminInstancesTerminateProvider202';
-export * from './postApiV1AdminInstancesTerminateProvider400';
-export * from './postApiV1AdminInstancesTerminateProvider500';
-export * from './postApiV1AdminInstancesTerminateProviderParams';
 export * from './postApiV1Generate400';
 export * from './postApiV1Generate401';
 export * from './postApiV1Generate500';
